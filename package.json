@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Boghdady/preparing-nodejs-course.git"
+    "url": "git+https://github.com/abdshekho/final-production.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Boghdady/preparing-nodejs-course/issues"
+    "url": "https://github.com/abdshekho/final-production"
   },
-  "homepage": "https://github.com/Boghdady/preparing-nodejs-course#readme",
+  "homepage": "https://github.com/abdshekho/final-production/tree/main#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
