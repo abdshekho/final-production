@@ -34,7 +34,7 @@ exports.createCashOrder = asyncHandler( async ( req, res, next ) => {
     user: req.user._id,
     cartItems: cart.products,
     shippingAddress: req.body.shippingAddress,
-    totalOrderPrice: taxPrice + shippingPrice + cartPrice,
+    totalOrderPrice: Number( taxPrice + shippingPrice + cartPrice ),
   } );
 
   // 4) After creating order decrement product quantity, increment sold
@@ -169,7 +169,7 @@ const createOrderCheckout = async ( session ) => {
   // 1) Get needed data from session
   const cartId = session.client_reference_id;
   // const checkoutAmount = session.display_items[ 0 ].amount / 100;
-  const checkoutAmount = session.amount_total.amount / 100;
+  const checkoutAmount = session.amount_total / 100;
   const shippingAddress = session.metadata;
 
   // 2) Get Cart and User
@@ -222,7 +222,7 @@ exports.webhookCheckout = ( req, res, next ) => {
 
   if ( event.type === 'checkout.session.completed' ) {
     createOrderCheckout( event.data.object );
-    
+
   }
 
   res.status( 200 ).json( { received: true } );
