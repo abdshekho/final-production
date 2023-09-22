@@ -14,12 +14,14 @@ exports.resizeImage = asyncHandler(async (req, res, next) => {
 
   // req.file.filename = `category-${uuidv4()}-${Date.now()}.jpeg`;
   const ext = req.file.mimetype.split('/')[1];
-  const filename = `brand-${uuidv4()}-${Date.now()}.${ext}`;
+  // const filename = `brand-${uuidv4()}-${Date.now()}.${ext}`;
+  const filename = `brand-${uuidv4()}-${Date.now()}.webp`;
 
   await sharp(req.file.buffer)
     // .resize(500, 500)
     // .toFormat('jpeg')
     // .jpeg({ quality: 90 })
+    .webp( { quality: 10 } )
     .toFile(`uploads/brands/${filename}`); // write into a file on the disk
   console.log(filename);
   req.body.image = filename;

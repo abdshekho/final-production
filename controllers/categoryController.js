@@ -1,10 +1,10 @@
-const sharp = require('sharp'); // image processing lib for nodejs
-const { v4: uuidv4 } = require('uuid');
-const asyncHandler = require('express-async-handler');
+const sharp = require( 'sharp' ); // image processing lib for nodejs
+const { v4: uuidv4 } = require( 'uuid' );
+const asyncHandler = require( 'express-async-handler' );
 
-const factory = require('./handlersFactory');
-const { uploadSingleImage } = require('../middlewares/imageUpload');
-const Category = require('../models/categoryModel');
+const factory = require( './handlersFactory' );
+const { uploadSingleImage } = require( '../middlewares/imageUpload' );
+const Category = require( '../models/categoryModel' );
 
 // 1- Use diskStorage Engine (configure destination & image name)
 // const multerStorage = multer.diskStorage({
@@ -35,47 +35,49 @@ const Category = require('../models/categoryModel');
 // const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
 // exports.uploadCategoryImage = upload.single('image');
-exports.uploadCategoryImage = uploadSingleImage('image');
+exports.uploadCategoryImage = uploadSingleImage( 'image' );
 
 // Resize image
-exports.resizeImage = asyncHandler(async (req, res, next) => {
-  if (!req.file) return next();
+exports.resizeImage = asyncHandler( async ( req, res, next ) => {
+  if ( !req.file ) return next();
 
   // req.file.filename = `category-${uuidv4()}-${Date.now()}.jpeg`;
-  const ext = req.file.mimetype.split('/')[1];
-  const filename = `category-${uuidv4()}-${Date.now()}.${ext}`;
+  const ext = req.file.mimetype.split( '/' )[ 1 ];
+  // const filename = `category-${uuidv4()}-${Date.now()}.${ext}`;
+  const filename = `category-${uuidv4()}-${Date.now()}.webp`;
 
-  await sharp(req.file.buffer)
-    // .resize(500, 500)
-    .toFile(`uploads/categories/${filename}`); // write into a file on the disk
+  await sharp( req.file.buffer )
+    // .resize( { width: 250, height: 250 } )
+    .webp( { quality: 10 } )
+    .toFile( `uploads/categories/${filename}` ); // write into a file on the disk
 
   req.body.image = filename;
   next();
-});
+} );
 
 // @desc      Get all categories
 // @route     GET /api/v1/categories
 // @access    Public
-exports.getCategories = factory.getAll(Category);
+exports.getCategories = factory.getAll( Category );
 
 // @desc      Get specific category by id
 // @route     GET /api/v1/categories/:id
 // @access    Public
-exports.getCategory = factory.getOne(Category);
+exports.getCategory = factory.getOne( Category );
 
 // @desc      Create category
 // @route     POST /api/v1/categories
 // @access    Private
-exports.createCategory = factory.createOne(Category);
+exports.createCategory = factory.createOne( Category );
 
 // @desc      Update category
 // @route     PATCH /api/v1/categories/:id
 // @access    Private
-exports.updateCategory = factory.updateOne(Category);
+exports.updateCategory = factory.updateOne( Category );
 
 // @desc     Delete category
 // @route    DELETE /api/v1/categories/:id
 // @access   Private
-exports.deleteCategory = factory.deleteOne(Category);
+exports.deleteCategory = factory.deleteOne( Category );
 
-exports.deleteAll = factory.deleteAll(Category);
+exports.deleteAll = factory.deleteAll( Category );
